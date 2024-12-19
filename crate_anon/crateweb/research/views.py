@@ -156,6 +156,16 @@ from crate_anon.crateweb.userprofile.models import (
     get_patients_per_page,
     UserProfile,
 )
+from crate_anon.nlp_manager.constants import (
+    # Fieldnames for CRATE NLP table
+    FN_NLPDEF,
+    FN_SRCDB,
+    FN_SRCFIELD,
+    FN_SRCPKFIELD,
+    FN_SRCPKSTR,
+    FN_SRCPKVAL,
+    FN_SRCTABLE,
+)
 
 log = BraceStyleAdapter(logging.getLogger(__name__))
 
@@ -171,16 +181,6 @@ MAX_LEN_SHOW = 20000
 # Prefix for inline pid and mpid conversion
 PID_PREFIX = "~pid"
 MPID_PREFIX = "~mpid"
-
-
-# Fieldnames for CRATE NLP table
-FN_NLPDEF = "_nlpdef"
-FN_SRCDB = "_srcdb"
-FN_SRCTABLE = "_srctable"
-FN_SRCFIELD = "_srcfield"
-FN_SRCPKFIELD = "_srcpkfield"
-FN_SRCPKVAL = "_srcpkval"
-FN_SRCPKSTR = "_srcpkstr"
 
 
 # =============================================================================
@@ -1596,7 +1596,7 @@ def resultset_html_table(
     Returns:
         str: HTML
 
-    """  # noqa
+    """  # noqa: E501
     # Considered but not implemented: hiding table columns
     # ... see esp "tr > *:nth-child(n)" at
     # https://stackoverflow.com/questions/5440657/how-to-hide-columns-in-html-table  # noqa
@@ -1729,7 +1729,7 @@ def single_record_html_table(
     Returns:
         str: HTML
 
-    """  # noqa
+    """  # noqa: E501
     table_html = ""
     if FN_NLPDEF in fieldnames:
         srcdb_ind = srctable_ind = srcfield_ind = None
@@ -2410,7 +2410,7 @@ def render_lookup(
 
     Returns:
         a :class:`django.http.response.HttpResponse`
-    """  # noqa
+    """  # noqa: E501
     # if not request.user.superuser:
     #    return HttpResponse('Forbidden', status=403)
     #    # https://stackoverflow.com/questions/3297048/403-forbidden-vs-401-unauthorized-http-responses  # noqa
@@ -2896,7 +2896,7 @@ def common_find_text(
 
     Returns:
         a :class:`django.http.response.HttpResponse`
-    """  # noqa
+    """  # noqa: E501
     # When you forget about Django forms, go back to:
     # http://www.slideshare.net/pydanny/advanced-django-forms-usage
 

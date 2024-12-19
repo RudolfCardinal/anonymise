@@ -1,5 +1,5 @@
 """
-crate_anon/version.py
+crate_anon/nlp_manager/processor_helpers.py
 
 ===============================================================================
 
@@ -23,36 +23,19 @@ crate_anon/version.py
 
 ===============================================================================
 
-**Version constants for CRATE.**
+**Helper functions to manage all NLP processor classes.**
+
+These use a delayed import, sorting out some circular import problems.
 
 """
 
-import sys
-
-
 # =============================================================================
-# Constants
+# Imports
 # =============================================================================
 
-CRATE_VERSION = "0.20.6"
-CRATE_VERSION_DATE = "2024-06-26"
+from typing import Optional
 
-MINIMUM_PYTHON_VERSION = (3, 9)
-# Only other place that has this: install_virtualenv.py (which can't import
-# CRATE packages).
-
-
-# =============================================================================
-# Derived constants
-# =============================================================================
-
-CRATE_VERSION_PRETTY = (
-    f"CRATE version {CRATE_VERSION}, {CRATE_VERSION_DATE}. "
-    f"Created by Rudolf Cardinal."
-)
-MINIMUM_PYTHON_VERSION_AS_DECIMAL = ".".join(
-    str(_) for _ in MINIMUM_PYTHON_VERSION
-)
+from crate_anon.nlp_manager.base_nlp_parser import TableMaker
 
 
 # =============================================================================
@@ -60,10 +43,27 @@ MINIMUM_PYTHON_VERSION_AS_DECIMAL = ".".join(
 # =============================================================================
 
 
-def require_minimum_python_version():
+def make_nlp_parser_unconfigured(
+    classname: str, raise_if_absent: bool = True
+) -> Optional[TableMaker]:
     """
-    Checks that we are running the required minimum Python version.
+    Get a debugging (unconfigured) instance of an NLP parser.
+
+    Args:
+        classname: the name of the NLP parser class
+        raise_if_absent: raise ``ValueError`` if there is no match?
+
+    Returns:
+        the class, or ``None`` if there isn't one with that name
+
     """
-    assert (
-        sys.version_info >= MINIMUM_PYTHON_VERSION
-    ), f"Need Python {MINIMUM_PYTHON_VERSION_AS_DECIMAL}+"
+    from crate_anon.nlp_manager.all_processors import (
+        get_nlp_parser_class,
+    )  # delayed import
+
+    cls = get_nlp_parser_class(classname)
+    if cls:
+        return cls(nlpdef=None, cfg_processor_name=None)
+    if raise_if_absent:
+        raise ValueError(f"Unknown NLP processor type: {classname!r}")
+    return None

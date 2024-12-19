@@ -1697,6 +1697,11 @@ Changes
   failing when there is a mismatch between the created database tables and the
   ONSPD spreadsheet files.
 
+- Update NLP handler to cope with remote NLPRP servers providing tabular_schema
+  data, and create local tables based on this, if desired. Change default
+  NLPRP server behaviour to use the more explicit format (object/dictionaries
+  by table, not plain arrays/lists of records).
+
 
 To do
 -----
