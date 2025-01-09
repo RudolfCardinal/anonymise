@@ -425,6 +425,7 @@ from typing import List
 
 from cardinal_pythonlib.logs import configure_logger_for_colour
 from cardinal_pythonlib.sqlalchemy.schema import (
+    execute_ddl,
     get_effective_int_pk_col,
     make_bigint_autoincrement_column,
 )
@@ -444,7 +445,6 @@ from crate_anon.common.sql import (
     drop_indexes,
     drop_view,
     ensure_columns_present,
-    execute,
     get_column_names,
     get_table_names,
     get_view_names,
@@ -609,7 +609,7 @@ def process_patient_table(
             f"Table {table.name!r}: updating columns {CRATE_COL_PK!r} "
             f"and {CRATE_COL_RIO_NUMBER!r}"
         )
-        execute(
+        execute_ddl(
             engine,
             f"""
             UPDATE {table.name} SET
@@ -627,7 +627,7 @@ def process_patient_table(
             f"Table {table.name!r}: "
             f"updating column {CRATE_COL_RIO_NUMBER!r}"
         )
-        execute(
+        execute_ddl(
             engine,
             f"""
             UPDATE {table.name} SET
@@ -698,7 +698,7 @@ def process_nonpatient_table(
             engine, tablename=table.name, column_names=[CRATE_COL_PK]
         )
     if other_pk_col:
-        execute(
+        execute_ddl(
             engine,
             f"""
             UPDATE {table.name} SET {CRATE_COL_PK} = {other_pk_col}
@@ -761,7 +761,7 @@ def process_master_patient_table(
         ensure_columns_present(
             engine, tablename=table.name, column_names=[CRATE_COL_NHS_NUMBER]
         )
-    execute(
+    execute_ddl(
         engine,
         f"""
         UPDATE {table.name} SET
@@ -848,7 +848,7 @@ def process_progress_notes(
         f"Progress notes table {table.name!r}: "
         f"updating {CRATE_COL_MAX_SUBNUM!r}"
     )
-    execute(
+    execute_ddl(
         engine,
         f"""
         UPDATE p1
@@ -869,7 +869,7 @@ def process_progress_notes(
         f"Progress notes table {table.name!r}: "
         f"updating {CRATE_COL_LAST_NOTE!r}"
     )
-    execute(
+    execute_ddl(
         engine,
         f"""
         UPDATE {table.name} SET
@@ -967,7 +967,7 @@ def process_clindocs_table(
         f"Clinical documents table {table.name!r}: "
         f"updating {CRATE_COL_MAX_DOCVER!r}"
     )
-    execute(
+    execute_ddl(
         engine,
         f"""
         UPDATE p1
@@ -989,7 +989,7 @@ def process_clindocs_table(
         f"Clinical documents table {table.name!r}: "
         f"updating {CRATE_COL_LAST_DOC!r}"
     )
-    execute(
+    execute_ddl(
         engine,
         f"""
         UPDATE {table.name} SET
