@@ -1692,6 +1692,19 @@ Changes
   characters in the source database. Convert any unusual characters to ASCII in
   the destination database.
 
+- Update ``crate_postcodes`` to support the November 2024 ONSPD in full. Offer
+  partial support for ONSPD lookup tables in earlier/future versions by not
+  failing when there is a mismatch between the created database tables and the
+  ONSPD spreadsheet files.
+
+- Workaround a problem with Docker's handling of large sparse files, which
+  resulted in a very large Docker image if the ID of the user creating the image
+  was large.
+
+- Update the installer to provide some example scripts for running
+  anonymisation, NLP etc under Docker.
+  https://github.com/ucam-department-of-psychiatry/crate/issues/163
+
 - Update NLP handler to cope with remote NLPRP servers providing tabular_schema
   data, and create local tables based on this, if desired. Change default
   NLPRP server behaviour to use the more explicit format (object/dictionaries
